@@ -1,0 +1,24 @@
+version: '2'
+services:
+  postgres:
+    container_name: postgres-venda
+    image: ricardojob/db-venda
+    build: ./postgres
+    ports:
+     - "5435:5432"
+    expose:
+     - 5435  
+    volumes:
+     - postgres-volume-venda:/var/lib/postgresql/data/
+  web:
+    container_name: app-venda
+    build: .
+    image: ricardojob/venda
+    ports:
+     - "8082:8080"
+     - "4950:4848"
+    links:
+     - "postgres:banco-venda"
+volumes:
+    postgres-volume-venda:
+      driver: local

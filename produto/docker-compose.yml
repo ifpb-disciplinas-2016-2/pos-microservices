@@ -1,0 +1,28 @@
+version: '2'
+services:
+  postgres:
+    container_name: postgres-produto
+    image: ricardojob/db-produto
+    build: ./postgres
+    ports:
+     - "5433:5432"
+    expose:
+     - 5433   
+    volumes:
+     - postgres-volume-db:/var/lib/postgresql/data/
+  web:
+    container_name: app-produto
+    build: .
+    image: ricardojob/produto
+    ports:
+     - "8083:8080"
+     - "4948:4848"
+    links:
+     - "postgres:banco"
+networks:
+  default:
+    external:
+      name: venda_default
+volumes:
+    postgres-volume-db:
+      driver: local

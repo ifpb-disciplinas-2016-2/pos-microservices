@@ -1,0 +1,28 @@
+version: '2'
+services:
+  postgres:
+    container_name: postgres-cliente
+    image: ricardojob/db-cliente
+    build: ./postgres
+    ports:
+     - "5434:5432"
+    expose:
+     - 5434   
+    volumes:
+     - postgres-volume-cliente:/var/lib/postgresql/data/
+  web:
+    container_name: app-cliente
+    build: .
+    image: ricardojob/cliente
+    ports:
+     - "8081:8080"
+     - "4949:4848"
+    links:
+     - "postgres:banco-cliente"
+networks:
+  default:
+    external:
+      name: venda_default 
+volumes:
+    postgres-volume-cliente:
+      driver: local
